@@ -35,7 +35,11 @@ class Classifier(nn.Module):
         self.initialize_weights()
 
     def forward(self, feat):
-        return self.classifier(feat)
+        feat = self.pool(feat)
+        feat = self.batch_norm(feat)
+        feat = self.flatten(feat)
+        out = self.linear(feat)
+        return out
 
     #initialization of linear layer
     def initialize_weights(self):
