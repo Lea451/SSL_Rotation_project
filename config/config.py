@@ -1,5 +1,7 @@
 import torch
 
+config = {}
+
 # Training Configuration
 train_config = {
     "train": {
@@ -19,6 +21,7 @@ train_config = {
     },
     "device": "cuda" if torch.cuda.is_available() else "cpu",
 }
+config['train_config'] = train_config
 
 # Model Configuration
 model_config = {
@@ -29,3 +32,4 @@ model_config = {
         "pool_type": "avg",  # Options: "max" or "avg"
     }
 }
+config['model_config'] = model_config
