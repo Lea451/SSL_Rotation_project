@@ -1,5 +1,5 @@
 import argparse
-from config.config import train_config, model_config
+from config.config import config
 from dataloader import get_dataloader
 from models.ResNet18 import create_model as create_resnet
 from models.Classifier import create_model as create_classifier
@@ -13,7 +13,7 @@ def main():
     args = parser.parse_args()
 
     # Combine configurations
-    opt = {**train_config, **model_config}
+    opt = {**config['train_config'], **config['model_config']}
 
     # Initialize model
     if opt["model"]["type"] == "ResNet18":
