@@ -171,4 +171,5 @@ cython_debug/
 .pypirc
 
 data/ 
+checkpoints/
 #IGNORE DATA => évite de push les grosses données à chaque fois 
