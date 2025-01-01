@@ -9,8 +9,8 @@ def get_optim(model, opt):
     ''' Returns SGD Optimizer with given parameters '''
     #il faudra mettre les paramètres de opt, mais il faudra aussi configurer opt pour que ça marche
     if opt['optimizer'] == 'Adam': 
-        return torch.optim.Adam(model.parameters(), lr
-    else: 
+        return torch.optim.Adam(model.parameters(), lr=0.0001) #j'ai hardcodé le lr pour l'instant
+    else: #idem on peut laisser les paramètres de SGD hardcodé pour le moment
         return SGD(
         model.parameters(),
         lr=0.1,
