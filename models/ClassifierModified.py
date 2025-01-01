@@ -4,10 +4,10 @@ from models.ResNet18 import ResNet18  # Assuming ResNet18 is in the models folde
 from models.Classifier import Classifier  # Assuming Classifier is in the models folder
 
 class ClassifierModified(nn.Module):
-    def __init__(self, pretext_model, classifier_opt):
-        super(ClassifierModified, self).__init__()
+    def _init_(self, pretext_model, classifier_opt):
+        super(ClassifierModified, self)._init_()
         
-        # Load the pretext model (ResNet18)
+        # Use the pretext model as the feature extractor
         self.feature_extractor = pretext_model
 
         # Freeze pretext model parameters
@@ -15,14 +15,16 @@ class ClassifierModified(nn.Module):
             param.requires_grad = False
 
         # Replace the ResNet's fully connected layer with the Classifier
-        self.feature_extractor.fc_block = Classifier(classifier_opt)
+        self.classifier = Classifier(classifier_opt)
 
     def forward(self, x):
-        # Pass through the feature extractor (ResNet18 with the new classifier)
-        out = self.feature_extractor(x)
+        # Extract features using the pretext model
+        features = self.feature_extractor(x, out_feat_keys=['avgpool'])  # Extract features before the replaced fc_block
+        
+        # Flatten the features (if necessary)
+        if isinstance(features, list):  # Handle multiple outputs
+            features = features[0]
+        
+        # Pass features through the classifier
+        out = self.classifier(features)
         return out
-
-    def initialize_weights(self):
-        # Initialize weights for the classifier's linear layers
-        self.feature_extractor.fc_block.initialize_weights()
-

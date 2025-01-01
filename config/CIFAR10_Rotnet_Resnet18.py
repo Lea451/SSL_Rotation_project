@@ -32,7 +32,9 @@ model_config = {
         "type": "ResNet18",  # Options: "ResNet18" or "Classifier"
         "num_classes": 4,    # Number of output classes
         "pool_size": 1,      # Pooling size for Classifier
-        "pool_type": "avg",  # Options: "max" or "avg"
+        "pool_type": "avg", # Options: "max" or "avg"
+        "model_save_path": "./experiments/ResNet18.pth",
+        "results_save_path": "./experiments/ResNet18_results.pth"
     }
 }
 config['model_config'] = model_config

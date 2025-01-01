@@ -1,3 +1,4 @@
+import os
 import tqdm
 import torch
 import torch.nn as nn
@@ -24,13 +25,19 @@ def get_loss(opt):
     #même remarque #ici on peut laisser les paramètres par défaut pour l'instant
     return nn.CrossEntropyLoss()
 
-def train(model, train_loader, optim, loss_fn, epochs=1):
+
+
+def train(model, train_loader, valid_loader, optim, loss_fn, opt, epochs=1):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
+    
+    best_loss = float('inf')
+    train_losses = []
+    val_losses = []
 
     for epoch in range(epochs):
         model.train()
-        losses = []
+        train_loss = 0.0
 
         for data, target in tqdm.tqdm(train_loader, desc=f"Epoch {epoch + 1}/{epochs} - Training"):
             data, target = data.to(device), target.to(device)
@@ -39,7 +46,30 @@ def train(model, train_loader, optim, loss_fn, epochs=1):
             loss = loss_fn(output, target)
             loss.backward()
             optim.step()
-            losses.append(loss.item())
+            train_loss += loss.item() * data.size(0)
+            
+        train_loss /= len(train_loader.dataset)
+        train_losses.append(train_loss)
+        
+        model.eval()
+        val_loss = 0.0
+        
+        with torch.no_grad():
+            for data, target in tqdm.tqdm(valid_loader, desc=f"Epoch {epoch + 1}/{epochs} - Validation"):
+                data, target = data.to(device), target.to(device)
+                output = model(data)
+                loss = loss_fn(output, target)
+                val_loss += loss.item() * data.size(0)
+        
+        val_loss /= len(valid_loader.dataset)
+        val_losses.append(val_loss)
+        
+        if val_loss < best_loss:
+            best_loss = val_loss
+            #join the epoch number to the model_save_path
+            path = os.join(opt['model']['model_save_path'], f"_epoch_{epoch + 1}.pth")
+            torch.save(model.state_dict(), path)
+            print(f"Model saved with Val Loss: {best_loss:.4f}")
         
         # Save checkpoint after every epoch
         checkpoint_path = f"checkpoints/checkpoint_epoch_{epoch + 1}.pt"
@@ -47,19 +77,60 @@ def train(model, train_loader, optim, loss_fn, epochs=1):
             'epoch': epoch + 1,
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optim.state_dict(),
-            'train_loss': loss
+            'train_loss': train_loss,
+            'valid_loss': val_loss,
         }, checkpoint_path)
         print(f"Saved checkpoint: {checkpoint_path}")
+        
+        
+    return train_losses, val_losses
 
-    return losses
+def test(model, test_loader, loss_fn, device, opt):
+    model.to(device)
+    model.eval()  # Set the model to evaluation mode
 
-def plot_losses(losses):
-    ''' Plots the training losses '''
+    test_loss = 0.0
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for data, target in tqdm.tqdm(test_loader, desc="Testing"):
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+
+            # Compute loss
+            loss = loss_fn(output, target)
+            test_loss += loss.item() * data.size(0)
+
+            # Compute accuracy
+            _, predicted = torch.max(output, dim=1)
+            correct += (predicted == target).sum().item()
+            total += target.size(0)
+
+    # Calculate average loss and accuracy
+    test_loss /= len(test_loader.dataset)
+    accuracy = 100.0 * correct / total
+
+    # Save test results
+    results_path = os.path.join(opt['model']['results_save_path'], "test_results.txt")
+    with open(results_path, "w") as f:
+        f.write(f"Test Loss: {test_loss:.4f}\n")
+        f.write(f"Test Accuracy: {accuracy:.2f}%\n")
+
+    print(f"Test Loss: {test_loss:.4f}")
+    print(f"Test Accuracy: {accuracy:.2f}%")
+
+    return test_loss, accuracy
+
+
+def plot_losses(train_losses, valid_losses):
+    ''' Plots the training and validation losses per epoch '''
     plt.figure(figsize=(10, 6))
-    plt.plot(losses, label="Batch Loss")
-    plt.xlabel("Batch")
+    plt.plot(train_losses, label="Training Loss", marker='o')
+    plt.plot(valid_losses, label="Validation Loss", marker='o')
+    plt.xlabel("Epoch")
     plt.ylabel("Loss")
-    plt.title("Loss Per Batch During Training")
+    plt.title("Training and Validation Loss Per Epoch")
     plt.legend()
     plt.grid()
     plt.show()

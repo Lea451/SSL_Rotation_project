@@ -172,4 +172,5 @@ cython_debug/
 
 data/ 
 checkpoints/
+experiments/
 #IGNORE DATA => évite de push les grosses données à chaque fois 

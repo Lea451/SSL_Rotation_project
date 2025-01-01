@@ -5,7 +5,7 @@ import config
 from dataloader import get_dataloader
 from models.ResNet18 import create_model as create_resnet
 from models.Classifier import create_model as create_classifier
-from train import train, get_optim, get_loss, plot_losses
+from train import train, test, get_optim, get_loss, plot_losses
 import torch
 
 def main():
@@ -40,18 +40,35 @@ def main():
     dataset_name = opt["data"]["dataset_name"]
     if dataset_name == "CIFAR10":
         from torchvision.datasets import CIFAR10
-        dataset = CIFAR10(root=opt["data"]["dataset_path"], train=False, download=True) #do not train by default !
+        train_full = CIFAR10(root=opt["data"]["dataset_path"], train=True, download=True) #train set 
+        test_dataset = CIFAR10(root=opt["data"]["dataset_path"], train=False, download=True) #test set
     else:
         raise ValueError(f"Unsupported dataset: {dataset_name}")
-
+    
+    train_dataset, valid_dataset = torch.utils.data.random_split(train_full, [0.85, 0.15])
+    
     train_loader = get_dataloader(
-        dataset=dataset,
+        dataset=train_dataset,
         batch_size=opt["train"]["batch_size"],
         unsupervised=opt["data"]["unsupervised"],
         num_workers=opt["train"]["num_workers"],
         shuffle=opt["train"]["shuffle"]
     )
-
+    valid_loader = get_dataloader(
+        dataset=valid_dataset,
+        batch_size=opt["train"]["batch_size"],
+        unsupervised=opt["data"]["unsupervised"],
+        num_workers=opt["train"]["num_workers"],
+        shuffle=opt["train"]["shuffle"]
+    )
+    test_loader = get_dataloader(
+        dataset=test_dataset,
+        batch_size=opt["train"]["batch_size"],
+        unsupervised=opt["data"]["unsupervised"],
+        num_workers=opt["train"]["num_workers"],
+        shuffle=opt["train"]["shuffle"]
+    )
+   
     # Optimizer and Loss Function
     optim = get_optim(model, opt["train"])
     loss_fn = get_loss(opt["train"])
@@ -59,10 +76,14 @@ def main():
     # Train or Test
     if args.evaluate == False:
         print("Starting training...")
-        losses = train(model, train_loader, optim, loss_fn, epochs=opt["train"]["epochs"])
+        losses = train(model, train_loader, valid_loader, optim, loss_fn, opt, epochs=opt["train"]["epochs"])
         plot_losses(losses)
     else:
-        print("Testing mode is not implemented yet.")
+        print("Starting testing...")
+        #load the model to test 
+        checkpoint = torch.load(f"checkpoints/checkpoint_epoch_{args.checkpoint}.pt")
+        model = model.load_state_dict(checkpoint['model_state_dict'])
+        losses = test(model, train_loader, loss_fn, opt)
 
 if __name__ == "__main__":
     main()
