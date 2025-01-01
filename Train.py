@@ -8,7 +8,10 @@ import matplotlib.pyplot as plt
 def get_optim(model, opt):
     ''' Returns SGD Optimizer with given parameters '''
     #il faudra mettre les paramètres de opt, mais il faudra aussi configurer opt pour que ça marche
-    return SGD(
+    if opt['optimizer'] == 'Adam': 
+        return torch.optim.Adam(model.parameters(), lr
+    else: 
+        return SGD(
         model.parameters(),
         lr=0.1,
         momentum=0.9,
