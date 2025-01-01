@@ -1,12 +1,13 @@
 import torch
 
 config = {}
+opt = {}
 
 # Training Configuration
 train_config = {
     "train": {
         "batch_size": 64,
-        "num_workers": 4,
+        "num_workers": 0, #num_workers=0 pour le moment pour éviter les problèmes de multiprocessing
         "shuffle": True,
         "optimizer":'Adam',
         "learning_rate": 0.0001, #0.1 for SGD, 0.0001 for Adam
@@ -35,3 +36,5 @@ model_config = {
     }
 }
 config['model_config'] = model_config
+
+opt = {**config['train_config'], **config['model_config']}

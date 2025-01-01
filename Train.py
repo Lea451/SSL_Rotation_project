@@ -40,6 +40,16 @@ def train(model, train_loader, optim, loss_fn, epochs=1):
             loss.backward()
             optim.step()
             losses.append(loss.item())
+        
+        # Save checkpoint after every epoch
+        checkpoint_path = f"checkpoints/checkpoint_epoch_{epoch + 1}.pt"
+        torch.save({
+            'epoch': epoch + 1,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optim.state_dict(),
+            'train_loss': loss
+        }, checkpoint_path)
+        print(f"Saved checkpoint: {checkpoint_path}")
 
     return losses
 
