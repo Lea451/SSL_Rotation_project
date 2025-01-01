@@ -8,7 +8,8 @@ train_config = {
         "batch_size": 64,
         "num_workers": 4,
         "shuffle": True,
-        "learning_rate": 0.1,
+        "optimizer":'Adam',
+        "learning_rate": 0.0001, #0.1 for SGD, 0.0001 for Adam
         "momentum": 0.9,
         "weight_decay": 0.0005,
         "nesterov": True,
