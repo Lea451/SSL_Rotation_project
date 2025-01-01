@@ -21,7 +21,7 @@ def get_optim(model, opt):
 
 def get_loss(opt):
     ''' Returns CrossEntropyLoss '''
-    #même remarque
+    #même remarque #ici on peut laisser les paramètres par défaut pour l'instant
     return nn.CrossEntropyLoss()
 
 def train(model, train_loader, optim, loss_fn, epochs=1):
