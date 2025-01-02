@@ -12,9 +12,9 @@ class Flatten(nn.Module):
         return feat.view(feat.size(0), -1)
 
 class Classifier(nn.Module):
-    def __init__(self, opt):
+    def __init__(self, opt): #the argument is opt["model"]
         super(Classifier, self).__init__()
-        num_couche = opt['model']['num_couche']
+        num_couche = opt['num_couche']
         if num_couche == 0:
             nChannels = 512
         elif num_couche == 1:
@@ -23,9 +23,9 @@ class Classifier(nn.Module):
             nChannels = 128
         elif num_couche == 3:
             nChannels = 64
-        num_classes = opt['model']['num_classes']
-        pool_size = opt['model']['pool_size']
-        pool_type = opt['model']['pool_type'] if ('pool_type' in opt) else 'max'
+        num_classes = opt['num_classes']
+        pool_size = opt['pool_size']
+        pool_type = opt['pool_type'] if ('pool_type' in opt) else 'max'
         nChannelsAll = nChannels * pool_size * pool_size
 
         # Pooling layer

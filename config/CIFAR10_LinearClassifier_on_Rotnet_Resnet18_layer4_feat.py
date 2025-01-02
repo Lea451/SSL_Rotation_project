@@ -14,7 +14,7 @@ train_config = {
         "momentum": 0.9,
         "weight_decay": 0.0005,
         "nesterov": True,
-        "epochs": 10,
+        "epochs": 3, #3 for testing
     },
     "data": {
         "dataset_name": "CIFAR10",
@@ -34,6 +34,16 @@ model_config = {
         "pool_size": 1,      # Pooling size for Classifier
         "pool_type": "avg",  # Options: "max" or "avg"
         "num_couche": 1,     # Number of conv layer to get rid of, here = 1 so get rid of layer4
+        "model_save_path": "./experiments/LinearClassifier.pth",
+        "results_save_path": "./experiments/LinearClassifier_results.pth"
+    },
+    "pretext_model": {
+        "type": "ResNet18",  # Options: "ResNet18" or "Classifier"
+        "num_classes": 4 ,   # Number of output classes : here rotation classification task
+        "pool_size": 1,      # Pooling size for Classifier
+        "pool_type": "avg", # Options: "max" or "avg"
+        "model_save_path": "./experiments/ResNet18.pth",
+        "results_save_path": "./experiments/ResNet18_results.pth"
     }
 }
 config['model_config'] = model_config

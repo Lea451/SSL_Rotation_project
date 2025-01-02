@@ -40,3 +40,5 @@ model_config = {
 config['model_config'] = model_config
 
 opt = {**config['train_config'], **config['model_config']}
+
+print("opt from congig", opt)
