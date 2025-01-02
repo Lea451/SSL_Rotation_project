@@ -12,7 +12,10 @@ class ClassifierModified(nn.Module):
         self.feature_extractor = nn.Sequential(*list(pretext_model.children())[:-(opt['num_couche']+2)])  # num_couche=nb of conv layer we get rid of
         
         # Replace layer4 with the custom classifier
-        self.classifier = Classifier(opt)
+        if opt['type_classifier'] == 'Classifier':
+            self.classifier = Classifier(opt)
+        elif opt['type_classifier'] == 'ConvClassifier':
+            self.classifier = ConvClassifier(opt)
 
         # Freeze pretext model parameters
         for param in self.feature_extractor.parameters():

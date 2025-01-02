@@ -6,6 +6,7 @@ from dataloader import get_dataloader
 from models.ResNet18 import create_model as create_resnet
 from models.ClassifierModified import create_model as create_classifier
 from train import train, test, get_optim, get_loss, plot_losses
+import matplotlib.pyplot as plt
 import torch
 
 def main():

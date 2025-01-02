@@ -14,7 +14,7 @@ train_config = {
         "momentum": 0.9,
         "weight_decay": 0.0005,
         "nesterov": True,
-        "epochs": 100, #3 for testing
+        "epochs": 3, #3 for testing
     },
     "data": {
         "dataset_name": "CIFAR10",
@@ -30,7 +30,7 @@ config['train_config'] = train_config
 model_config = {
     "model": {
         "type": "ClassifierModified",  # Options: "ResNet18" or "Classifier"
-        "type_classifier": "Classifier", # Options: "ConvClassifier" or "Classifier"
+        "type_classifier": "ConvClassifier",  # Options: "ConvClassifier" or "Classifier"
         "num_classes": 10,    # Number of output classes : here normal classification task
         "pool_size": 1,      # Pooling size for Classifier
         "pool_type": "avg",  # Options: "max" or "avg"

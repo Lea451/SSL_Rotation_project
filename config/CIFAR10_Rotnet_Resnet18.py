@@ -14,7 +14,7 @@ train_config = {
         "momentum": 0.9,
         "weight_decay": 0.0005,
         "nesterov": True,
-        "epochs": 1, #1 for testing 
+        "epochs": 100, #1 for testing 
     },
     "data": {
         "dataset_name": "CIFAR10",

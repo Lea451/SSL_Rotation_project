@@ -148,6 +148,7 @@ def test(model, test_loader, loss_fn, opt):
     return test_loss, accuracy
 
 
+
 def plot_losses(train_losses, valid_losses):
     ''' Plots the training and validation losses per epoch '''
     plt.figure(figsize=(10, 6))
