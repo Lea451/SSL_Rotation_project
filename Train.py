@@ -67,7 +67,8 @@ def train(model, train_loader, valid_loader, optim, loss_fn, opt, epochs=1):
         if val_loss < best_loss:
             best_loss = val_loss
             #join the epoch number to the model_save_path
-            path = os.join(opt['model']['model_save_path'], f"_epoch_{epoch + 1}.pth")
+            os.makedirs(opt['model']['model_save_path'], exist_ok=True)
+            path = os.path.join(opt['model']['model_save_path'], f"_epoch_{epoch + 1}.pth")
             torch.save(model.state_dict(), path)
             print(f"Model saved with Val Loss: {best_loss:.4f}")
         

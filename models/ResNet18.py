@@ -38,7 +38,7 @@ class BasicBlock(nn.Module):
 class ResNet18(nn.Module):
     def __init__(self, opt):
         super(ResNet18, self).__init__()
-        self.num_classes = opt['num_classes']
+        self.num_classes = opt['model']['num_classes']
 
         # Initial layers : standard choice of kernel 7 stride 2 padding 3
         self.conv1 = nn.Sequential(
@@ -61,17 +61,6 @@ class ResNet18(nn.Module):
             nn.Linear(512, self.num_classes)
         )
 
-        self._feature_blocks = nn.ModuleList([
-            self.conv1,
-            self.pool1,
-            self.layer1,
-            self.layer2,
-            self.layer3,
-            self.layer4,
-            self.avgpool,
-            self.fc_block
-        ])
-
         self.all_feat_names = [
             'conv1',
             'pool1',
@@ -82,7 +71,7 @@ class ResNet18(nn.Module):
             'avgpool',
             'fc_block'
         ]
-        assert len(self.all_feat_names) == len(self._feature_blocks)
+        
 
     def _make_layer(self, in_channels, out_channels, blocks, stride):
         layers = []
@@ -111,19 +100,30 @@ class ResNet18(nn.Module):
         max_out_feat = max(self.all_feat_names.index(key) for key in out_feat_keys)
         return out_feat_keys, max_out_feat
 
-    def forward(self, x, out_feat_keys=None):
-        out_feat_keys, max_out_feat = self._parse_out_keys_arg(out_feat_keys)
-        out_feats = [None] * len(out_feat_keys)
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.pool1(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = self.avgpool(x)
+        x = self.fc_block(x)
+        return x            
 
-        feat = x
-        for f in range(max_out_feat + 1):
-            feat = self._feature_blocks[f](feat)
-            key = self.all_feat_names[f]
-            if key in out_feat_keys:
-                out_feats[out_feat_keys.index(key)] = feat
+    #def forward(self, x, out_feat_keys=None):
+    #    out_feat_keys, max_out_feat = self._parse_out_keys_arg(out_feat_keys)
+    #    out_feats = [None] * len(out_feat_keys)
 
-        out_feats = out_feats[0] if len(out_feats) == 1 else out_feats
-        return out_feats
+    #    feat = x
+    #    for f in range(max_out_feat + 1):
+    #        feat = self._feature_blocks[f](feat)
+    #        key = self.all_feat_names[f]
+    #       if key in out_feat_keys:
+     #           out_feats[out_feat_keys.index(key)] = feat
+
+    #    out_feats = out_feats[0] if len(out_feats) == 1 else out_feats
+    #    return out_feats
 
 def create_model(opt):
     return ResNet18(opt)

@@ -29,10 +29,11 @@ config['train_config'] = train_config
 # Model Configuration
 model_config = {
     "model": {
-        "type": "Classifier",  # Options: "ResNet18" or "Classifier"
+        "type": "ClassifierModified",  # Options: "ResNet18" or "Classifier"
         "num_classes": 10,    # Number of output classes : here normal classification task
         "pool_size": 1,      # Pooling size for Classifier
         "pool_type": "avg",  # Options: "max" or "avg"
+        "num_couche": 1,     # Number of conv layer to get rid of, here = 1 so get rid of layer4
     }
 }
 config['model_config'] = model_config
