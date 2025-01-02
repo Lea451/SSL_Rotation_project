@@ -100,9 +100,13 @@ def main():
     else:
         print("Starting testing...")
         #load the model to test 
-        checkpoint = torch.load(f"checkpoints/checkpoint_epoch_{args.checkpoint}.pt")
-        model = model.load_state_dict(checkpoint['model_state_dict'])
+        if opt["model"]["type"] == "ResNet18": #test the resnet18 model
+            checkpoint = torch.load(f"checkpoints/ResNet18/checkpoint_epoch_{args.checkpoint}.pt")
+        else: #test the classifier model
+            checkpoint = torch.load(f"checkpoints/{opt['model']['type']}_layer{opt['model']['num_couche']}_feat/checkpoint_epoch_{args.checkpoint}.pt")
+        model.load_state_dict(checkpoint['model_state_dict'])
         losses = test(model, train_loader, loss_fn, opt)
+        
 
 if __name__ == "__main__":
     main()

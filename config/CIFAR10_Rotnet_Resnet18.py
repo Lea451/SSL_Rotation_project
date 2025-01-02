@@ -34,7 +34,7 @@ model_config = {
         "pool_size": 1,      # Pooling size for Classifier
         "pool_type": "avg", # Options: "max" or "avg"
         "model_save_path": "./experiments/ResNet18.pth",
-        "results_save_path": "./experiments/ResNet18_results.pth"
+        "results_save_path": "./experiments/ResNet18_results"
     }
 }
 config['model_config'] = model_config
