@@ -8,7 +8,7 @@ import numpy as np
 class BasicBlock(nn.Module):
     def __init__(self, in_planes, out_planes, kernel_size, stride=1):
         super(BasicBlock, self).__init__()
-        padding = (kernel_size-1)/2
+        padding = (kernel_size-1)//2
         self.layers = nn.Sequential()
         self.layers.add_module('Conv', nn.Conv2d(in_planes, out_planes, \
             kernel_size=kernel_size, stride=stride, padding=padding, bias=False))
@@ -37,7 +37,7 @@ class Flatten(nn.Module):
 
 class ConvClassifier(nn.Module):
     def __init__(self, opt):
-        super(NonLinearClassifier, self).__init__()
+        super(ConvClassifier, self).__init__()
         num_couche = opt['num_couche']
         if num_couche == 0:
             nChannels = 512

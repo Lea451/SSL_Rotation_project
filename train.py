@@ -66,30 +66,41 @@ def train(model, train_loader, valid_loader, optim, loss_fn, opt, epochs=1):
         
         if val_loss < best_loss:
             best_loss = val_loss
-            #join the epoch number to the model_save_path
-            os.makedirs(opt['model']['model_save_path'], exist_ok=True)
-            path = os.path.join(opt['model']['model_save_path'], f"_epoch_{epoch + 1}.pth")
+            # Construct the directory path
+            dir_path = os.path.join(
+                opt['model']['model_save_path'], 
+                "_loaded_from_epoch_" + str(opt['model']['loaded_from_epoch'])
+            )
+            os.makedirs(dir_path, exist_ok=True)
+            path = os.path.join(
+                dir_path,
+                f"_epoch_{epoch + 1}.pth"
+            )
             torch.save(model.state_dict(), path)
             print(f"Model saved with Val Loss: {best_loss:.4f}")
+
+
     
 
         # Extract directory path (without the filename)
-        if opt['model']['type'] == "ResNet18":
+        if opt['model']['type'] == "ResNet18" and opt['model']['save_every_checkpoint'] == True:
             checkpoint_dir = f"checkpoints/ResNet18"
+            os.makedirs(checkpoint_dir, exist_ok=True)
+            checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_epoch_{epoch + 1}.pt")
+        
+            print(f"checkpoint_path: {checkpoint_path}")
+            torch.save({
+                'epoch': epoch + 1,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optim.state_dict(),
+                'train_loss': train_loss,
+                'valid_loss': val_loss,
+            }, checkpoint_path)
+            print(f"Saved checkpoint: {checkpoint_path}")
         else:
-            checkpoint_dir = f"checkpoints/{opt['model']['type']}_layer{opt['model']['num_couche']}_feat"
-        os.makedirs(checkpoint_dir, exist_ok=True)
-        checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_epoch_{epoch + 1}.pt")
-    
-        print(f"checkpoint_path: {checkpoint_path}")
-        torch.save({
-            'epoch': epoch + 1,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optim.state_dict(),
-            'train_loss': train_loss,
-            'valid_loss': val_loss,
-        }, checkpoint_path)
-        print(f"Saved checkpoint: {checkpoint_path}")
+            #checkpoint_dir = f"checkpoints/{opt['model']['type']}_layer{opt['model']['num_couche']}_feat"
+            print("No checkpoint for the Classifier")
+        
 
         
         

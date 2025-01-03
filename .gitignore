@@ -173,4 +173,5 @@ cython_debug/
 data/ 
 checkpoints/
 experiments/
+config/CIFAR10_LinearClassifier_on_Rotnet_Resnet18_layer4_feat.py
 #IGNORE DATA => évite de push les grosses données à chaque fois 

@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
-from models.ResNet18 import ResNet18  # Assuming ResNet18 is in the models folder
-from models.Classifier import Classifier  # Assuming Classifier is in the models folder
+from models.ResNet18 import ResNet18 
+from models.Classifier import Classifier  
+from models.ConvClassifier import ConvClassifier 
 
 
 class ClassifierModified(nn.Module):

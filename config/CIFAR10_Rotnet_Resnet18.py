@@ -18,6 +18,7 @@ train_config = {
     },
     "data": {
         "dataset_name": "CIFAR10",
+        "dataset_type": "CIFAR", #type of dataset
         "dataset_path": "./data", #root where we will put downloaded not trained dataset 
         "download": True,
         "unsupervised": True,
