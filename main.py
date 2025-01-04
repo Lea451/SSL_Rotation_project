@@ -60,7 +60,7 @@ def main():
         pretext_model = create_resnet(opt['pretext_model'])
         optim = get_optim(pretext_model, opt["train"])
 
-        checkpoint_path = f"/users/eleves-a/2021/lea.bohbot/SSL_Rotation_project/experiments/ResNet18.pth/_loaded_from_epoch_0/_epoch_2.pth"  # Format the checkpoint file path
+        checkpoint_path = f"checkpoints/checkpoint_epoch_{args.checkpoint}.pt"  # Format the checkpoint file path
         print(f"Loading checkpoint: {checkpoint_path}")
         checkpoint = torch.load(checkpoint_path)  # Load the checkpoint file
 
