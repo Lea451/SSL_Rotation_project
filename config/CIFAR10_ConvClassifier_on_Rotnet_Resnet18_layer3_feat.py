@@ -31,13 +31,14 @@ config['train_config'] = train_config
 model_config = {
     "model": {
         "type": "ClassifierModified",  # Options: "ResNet18" or "Classifier"
-        "type_classifier": "Classifier", # Options: "ConvClassifier" or "Classifier"
+        "type_classifier": "ConvClassifier",  # Options: "ConvClassifier" or "Classifier"
         "num_classes": 10,    # Number of output classes : here normal classification task
         "pool_size": 1,      # Pooling size for Classifier
         "pool_type": "avg",  # Options: "max" or "avg"
-        "num_couche": 1,     # Number of conv layer to get rid of, here = 1 so get rid of layer4
-        "model_save_path": "./experiments/LinearClassifier.pth",
-        "results_save_path": "./experiments/LinearClassifier_results.pth"
+        "num_couche": 3,     # Number of conv layer to get rid of, here = 1 so get rid of layer4
+        "model_save_path": "./experiments/ConvClassifier.pth",
+        "loaded_from_epoch": 100,
+        "results_save_path": "./experiments/ConvClassifier_results.pth"
     },
     "pretext_model": {
         "type": "ResNet18",  # Options: "ResNet18" or "Classifier"

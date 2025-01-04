@@ -38,7 +38,8 @@ class BasicBlock(nn.Module):
 class ResNet18(nn.Module):
     def __init__(self, opt):
         super(ResNet18, self).__init__()
-        self.num_classes = opt['model']['num_classes']
+        print("opt.keys() before Resnet", opt.keys())
+        self.num_classes = opt['num_classes']
 
         # Initial layers : standard choice of kernel 7 stride 2 padding 3
         self.conv1 = nn.Sequential(

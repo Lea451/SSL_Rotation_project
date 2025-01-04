@@ -14,10 +14,11 @@ train_config = {
         "momentum": 0.9,
         "weight_decay": 0.0005,
         "nesterov": True,
-        "epochs": 1, #1 for testing 
+        "epochs": 100, #1 for testing 
     },
     "data": {
         "dataset_name": "CIFAR10",
+        "dataset_type": "CIFAR", #type of dataset
         "dataset_path": "./data", #root where we will put downloaded not trained dataset 
         "download": True,
         "unsupervised": True,
@@ -34,9 +35,11 @@ model_config = {
         "pool_size": 1,      # Pooling size for Classifier
         "pool_type": "avg", # Options: "max" or "avg"
         "model_save_path": "./experiments/ResNet18.pth",
-        "results_save_path": "./experiments/ResNet18_results.pth"
+        "results_save_path": "./experiments/ResNet18_results"
     }
 }
 config['model_config'] = model_config
 
 opt = {**config['train_config'], **config['model_config']}
+
+print("opt from congig", opt)

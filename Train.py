@@ -66,27 +66,60 @@ def train(model, train_loader, valid_loader, optim, loss_fn, opt, epochs=1):
         
         if val_loss < best_loss:
             best_loss = val_loss
-            #join the epoch number to the model_save_path
-            os.makedirs(opt['model']['model_save_path'], exist_ok=True)
-            path = os.path.join(opt['model']['model_save_path'], f"_epoch_{epoch + 1}.pth")
+            # Construct the directory path
+            dir_path = os.path.join(
+                opt['model']['model_save_path'], 
+                "_loaded_from_epoch_" + str(opt['model']['loaded_from_epoch'])
+            )
+            os.makedirs(dir_path, exist_ok=True)
+            path = os.path.join(
+                dir_path,
+                f"_epoch_{epoch + 1}.pth"
+            )
             torch.save(model.state_dict(), path)
             print(f"Model saved with Val Loss: {best_loss:.4f}")
+
+
+    
+
+        # Extract directory path (without the filename)
+        if opt['model']['type'] == "ResNet18" and opt['model']['save_every_checkpoint'] == True:
+            checkpoint_dir = f"checkpoints/ResNet18"
+            os.makedirs(checkpoint_dir, exist_ok=True)
+            checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_epoch_{epoch + 1}.pt")
         
-        # Save checkpoint after every epoch
-        checkpoint_path = f"checkpoints/checkpoint_epoch_{epoch + 1}.pt"
-        torch.save({
-            'epoch': epoch + 1,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optim.state_dict(),
-            'train_loss': train_loss,
-            'valid_loss': val_loss,
-        }, checkpoint_path)
-        print(f"Saved checkpoint: {checkpoint_path}")
+            print(f"checkpoint_path: {checkpoint_path}")
+            torch.save({
+                'epoch': epoch + 1,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optim.state_dict(),
+                'train_loss': train_loss,
+                'valid_loss': val_loss,
+            }, checkpoint_path)
+            print(f"Saved checkpoint: {checkpoint_path}")
+        else:
+            #checkpoint_dir = f"checkpoints/{opt['model']['type']}_layer{opt['model']['num_couche']}_feat"
+            print("No checkpoint for the Classifier")
+        
+
+        
+        
+        ## Save checkpoint after every epoch
+        #checkpoint_path = f"checkpoints/checkpoint_epoch_{epoch + 1}.pt"
+        #torch.save({
+        #    'epoch': epoch + 1,
+        #    'model_state_dict': model.state_dict(),
+        #    'optimizer_state_dict': optim.state_dict(),
+        #    'train_loss': train_loss,
+        #    'valid_loss': val_loss,
+        #}, checkpoint_path)
+        #print(f"Saved checkpoint: {checkpoint_path}")
         
         
     return train_losses, val_losses
 
-def test(model, test_loader, loss_fn, device, opt):
+def test(model, test_loader, loss_fn, opt):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     model.eval()  # Set the model to evaluation mode
 
@@ -113,7 +146,9 @@ def test(model, test_loader, loss_fn, device, opt):
     accuracy = 100.0 * correct / total
 
     # Save test results
-    results_path = os.path.join(opt['model']['results_save_path'], "test_results.txt")
+    #create the path to save the results
+    os.makedirs(opt['model']['results_save_path'], exist_ok=True)
+    results_path = os.path.join(opt['model']['results_save_path'], "results.txt")
     with open(results_path, "w") as f:
         f.write(f"Test Loss: {test_loss:.4f}\n")
         f.write(f"Test Accuracy: {accuracy:.2f}%\n")
@@ -122,6 +157,7 @@ def test(model, test_loader, loss_fn, device, opt):
     print(f"Test Accuracy: {accuracy:.2f}%")
 
     return test_loss, accuracy
+
 
 
 def plot_losses(train_losses, valid_losses):
