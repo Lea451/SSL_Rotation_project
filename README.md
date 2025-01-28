@@ -32,4 +32,7 @@ This project uses a **self-supervised learning** approach to train a model to pr
 1. Configure training parameters in `config/`.
 2. Start training with:
    ```bash
-   python train.py
+   python main.py
+
+### Testing
+Start : python main.py --evaluate = True --config=/...
