@@ -1,8 +1,10 @@
 # SSL_Rotation_project
 
-**Reimplementation of the paper "Unsupervised representation learning by predicting image rotations"**
+**Reimplementation of the paper "Unsupervised representation learning by predicting image rotations" by Gidaris et al.**
 
-This project uses a **self-supervised learning** approach to train a model to predict the rotation angle applied to an image as part of unsupervised representation learning.
+Self-supervised learning (SSL) is where a model learns useful representations without requiring labeled data. 
+In this project, we use image rotation prediction as the pretext task: the model is trained to recognize whether an image has been rotated by 0, 90, 180, or 270 degrees. 
+By solving this task, the model learns robust image features that can be transferred to downstream tasks.
 
 ---
 
@@ -48,5 +50,9 @@ This project uses a **self-supervised learning** approach to train a model to pr
 
    Test a pre-trained RotNet + Linear Classifier on Flowers: python main.py --exp Flowers_LinearClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --evaluate True --checkpoint [checkpoint number of the RotNet]
    Test a pre-trained RotNet + ConvClassifier on Flowers: python main.py --exp Flowers_ConvClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --evaluate True --checkpoint [checkpoint number of the RotNet]
+
+
+### Results
+
 
 
