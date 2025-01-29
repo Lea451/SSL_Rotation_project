@@ -93,4 +93,25 @@ By solving this task, the model learns robust image features that can be transfe
 | Rotation Prediction     | 43.89     |
 | Classification Prediction  | 23.94       | 
 
+We confirm that with a mainly rotation-invariant dataset, the model does not
+learn anything. 
+
+## Conclusion and Future Work
+
+### **Conclusion**
+- RotNet effectively learns transferable features.
+- A simple yet powerful method for self-supervised learning.
+
+### **Future Work**
+- Explore larger datasets (e.g., ImageNet).
+- Extend to other geometric transformations.
+
+---
+
+## References
+1. Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. *Deep Residual Learning for Image Recognition*. CVPR 2016.
+
+
+
+
 
