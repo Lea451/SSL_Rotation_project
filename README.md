@@ -52,3 +52,23 @@ By solving this task, the model learns robust image features that can be transfe
    Test a pre-trained RotNet + ConvClassifier on Flowers: main.py --exp Flowers_ConvClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --evaluate True --checkpoint [checkpoint number of the RotNet]
 
 ## Results
+
+### CIFAR-10 Dataset
+
+#### Key Metrics:
+- **Rotation prediction accuracy**: 95.39%
+- **Downstream classification accuracy (Linear Classifier)**: 55.15%
+- **Downstream classification accuracy (Convolutional Classifier)**: **95.49%**
+
+#### Classification Evaluation
+
+| **Layer (Numcouche)** | **Test Loss** | **Accuracy (%)** |
+|----------------------|-------------|----------------|
+| AvgPooling (0)       | 0.496       | 87.09          |
+| Conv Layer 4 (1)     | 0.362       | 93.77          |
+| Conv Layer 3 (2)     | 0.335       | 94.39          |
+| Conv Layer 2 (3)     | **0.215**   | **95.49**      |
+| Conv Layer 1 (4)     | 0.393       | 88.32          |
+
+> **Note:** This table presents the classification evaluation when placing our **ConvClassifier** on top of different layers of our **ResNet18 model**.
+
