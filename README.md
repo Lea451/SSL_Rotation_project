@@ -32,10 +32,11 @@ This project uses a **self-supervised learning** approach to train a model to pr
 1. Configure training parameters in `config/`.
 2. Start training with:
    ```bash
-   python main.py
-
    Train a RotNet on CIFAR10: main.py --exp CIFAR10_Rotnet_Resnet18
    Train a RotNet on Oxford Flowers 102 : main.py --exp Flowers_Rotnet_Resnet18
+
+   Train a ConvClassifier on top of a pre-trained RotNet on CIFAR10: main.py --exp CIFAR10_LinearClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --checkpoint [checkpoint number of the RotNet]
+
 
 ### Testing
 Start : python main.py --evaluate = True --config=/...
