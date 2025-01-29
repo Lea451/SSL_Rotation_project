@@ -44,7 +44,7 @@ By solving this task, the model learns robust image features that can be transfe
    Train a ConvClassifier on top of a pre-trained RotNet on Flowers: main.py --exp Flowers_ConvClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --checkpoint [checkpoint number of the RotNet]
    
 **Note:**
-- `layer number` refers to the ResNet-18 layer from on top of which we add our classifier.
+- `layer number` refers to the ResNet-18 layer on top of which we add our classifier.
 - `checkpoint number` is the saved model checkpoint index from a previous RotNet training run. 
 
 ### Testing
