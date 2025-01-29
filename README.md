@@ -52,7 +52,7 @@ By solving this task, the model learns robust image features that can be transfe
    Test a pre-trained RotNet + ConvClassifier on Flowers: python main.py --exp Flowers_ConvClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --evaluate True --checkpoint [checkpoint number of the RotNet]
 
 
-### Results
+
 
 
 
