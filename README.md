@@ -53,6 +53,18 @@ By solving this task, the model learns robust image features that can be transfe
 
 ## Results
 
+### Experimental Setup
+
+- **RotNet Structure**:
+  - ResNet-18
+  - Linear or Convolutional Classifier
+
+- **Optimizer**: Adam with default parameters  
+- **Loss**: Cross-Entropy  
+- **Epochs**: 100  
+- **Batch Size**: 32  
+
+
 ### CIFAR-10 Dataset
 
 #### Key Metrics:
@@ -71,4 +83,14 @@ By solving this task, the model learns robust image features that can be transfe
 | Conv Layer 1 (4)     | 0.393       | 88.32          |
 
 > **Note:** This table presents the classification evaluation when placing our **ConvClassifier** on top of different layers of our **ResNet18 model**.
+
+### Oxford Flowers 102 Dataset
+
+#### Classification Evaluation
+
+| **Task** | **Accuracy (%)** |
+|----------------------|-------------|
+| Rotation Prediction     | 43.89     |
+| Classification Prediction  | 23.94       | 
+
 
