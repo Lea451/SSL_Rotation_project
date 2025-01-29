@@ -34,7 +34,8 @@ This project uses a **self-supervised learning** approach to train a model to pr
    ```bash
    python main.py
 
-   Train a RotNet on CIFAT10: main.py --exp CIFAR10_Rotnet_Resnet18
+   Train a RotNet on CIFAR10: main.py --exp CIFAR10_Rotnet_Resnet18
+   Train a RotNet on Oxford Flowers 102 : main.py --exp Flowers_Rotnet_Resnet18
 
 ### Testing
 Start : python main.py --evaluate = True --config=/...
