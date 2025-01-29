@@ -33,7 +33,7 @@ By solving this task, the model learns robust image features that can be transfe
 ### Training
 1. Configure training parameters in `config/`.
 2. Start training with:
-   ```bash
+   
    Train a RotNet on CIFAR10: main.py --exp CIFAR10_Rotnet_Resnet18
    Train a RotNet on Oxford Flowers 102 : main.py --exp Flowers_Rotnet_Resnet18
    
@@ -44,13 +44,11 @@ By solving this task, the model learns robust image features that can be transfe
    Train a ConvClassifier on top of a pre-trained RotNet on Flowers: main.py --exp Flowers_ConvClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --checkpoint [checkpoint number of the RotNet]
 
 ### Testing
-   ```bash
+   
    Test a pre-trained RotNet + Linear Classifier on CIFAR10: python main.py --exp CIFAR10_LinearClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --evaluate True --checkpoint [checkpoint number of the RotNet]
    Test a pre-trained RotNet + ConvClassifier on CIFAR10: python main.py --exp CIFAR10_ConvClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --evaluate True --checkpoint [checkpoint number of the RotNet]
 
    Test a pre-trained RotNet + Linear Classifier on Flowers: python main.py --exp Flowers_LinearClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --evaluate True --checkpoint [checkpoint number of the RotNet]
    Test a pre-trained RotNet + ConvClassifier on Flowers: python main.py --exp Flowers_ConvClassifier_on_Rotnet_Resnet18_layer[layer number]_feat --evaluate True --checkpoint [checkpoint number of the RotNet]
-
----
 
 ### Results
